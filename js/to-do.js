@@ -1,9 +1,8 @@
 var loadList = function(id, list) {
   if (list == undefined) {
     list = []
-  } else {
-    list = JSON.parse(list);
   }
+
   for (var i = 0; i < list.length; ++i) {
     $("#" + id + " ul").append("<li> <input type='text' value='" + list[i] + "'/></li>");
   }
@@ -11,9 +10,11 @@ var loadList = function(id, list) {
 };
 
 var loadItemsFromStorage = function() {
-  loadList("to-do", sessionStorage.to_do);
-  loadList("doing", sessionStorage.doing);
-  loadList("done", sessionStorage.done);
+  chrome.storage.local.get(["to_do", "doing", "done"], function(lists) {
+    loadList("to-do", lists.to_do);
+    loadList("doing", lists.doing);
+    loadList("done", lists.done);
+  });
 }
 
 var saveItems = function() {
@@ -31,15 +32,17 @@ var saveItems = function() {
     });
   }
 
-  sessionStorage.to_do = JSON.stringify(to_do);
-  sessionStorage.doing = JSON.stringify(doing);
-  sessionStorage.done = JSON.stringify(done);
+  chrome.storage.local.set(
+    {'to_do' : to_do, 'doing' : doing, 'done' : done}, 
+    function() {
+      if (chrome.runtime.lastError) {
+        console.log(chrome.runtime.lastError);
+      }
+  });
 }
 
 var deleteStorage = function () {
-  sessionStorage.removeItem("to_do");
-  sessionStorage.removeItem("doing");
-  sessionStorage.removeItem("done");
+  chrome.storage.local.clear();
 }
 
 $(function() {
