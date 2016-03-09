@@ -1,7 +1,7 @@
 body {
   margin: 0px auto;
   width: 700px;
- background: white no-repeat center center fixed;
+  background: white no-repeat center center fixed;
   -webkit-font-smoothing: antialiased;
   -webkit-background-size: cover;
   background-position: top left;
@@ -20,7 +20,7 @@ h1 {
 
 .sortable-containers {
   float: left;
-  width: 25%;
+  min-width: 200px;
   background: #ffffff;
   margin: 5px;
   padding: 10px;
@@ -38,5 +38,16 @@ h1 {
   margin: 5px 5px 5px 5px;
   background: #efefef;
   padding: 5px;
+}
+
+input {
   font-size: 1.2em;
+}
+
+.add-item {
+  float: right;
+  font-size: 1.5em;
+  background: none;
+  border: none;
+  padding: 5px;
 }
