@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <title>jQuery UI Sortable - Connect lists</title>
-  <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <script src="js/jquery-1.10.2.js"></script>
+  <script src="js/jquery-ui.js"></script>
+  <script src="js/to-do.js"></script>
   <style>
   .sortable-containers {
     float: left;
@@ -28,76 +28,6 @@
     width: 120px;
   }
   </style>
-  <script>
-  
-  var loadList = function(id, list) {
-    if (list == undefined) {
-      list = []
-    } else {
-      list = JSON.parse(list);
-    }
-    console.log(id + " -list.length=" + list.length);
-    for (var i = 0; i < list.length; ++i) {
-      $("#" + id + " ul").append("<li> <input type='text' value='" + list[i] + "'/></li>");
-    }
-    return list;
-  };
-
-  var loadItemsFromStorage = function() {
-    loadList("to-do", sessionStorage.to_do);
-    loadList("doing", sessionStorage.doing);
-    loadList("done", sessionStorage.done);
-  }
-
-  var saveItems = function() {
-    var to_do = [];
-    var doing = [];
-    var done = [];
-
-    var lists = [to_do, doing, done];
-    var ids = ["to-do", "doing", "done"];
-    for (var i = 0; i < ids.length; ++i) {
-      $("#" + ids[i] + " li input").each(function() {
-        console.log($(this).val());
-        lists[i].push($(this).val());
-      });
-    }
-
-    console.log(to_do.length);
-
-    sessionStorage.to_do = JSON.stringify(to_do);
-    sessionStorage.doing = JSON.stringify(doing);
-    sessionStorage.done = JSON.stringify(done);
-  }
-
-  var deleteStorage = function () {
-    sessionStorage.removeItem("to_do");
-    sessionStorage.removeItem("doing");
-    sessionStorage.removeItem("done");
-  }
-
-  $(function() {
-    $( "#sortable1, #sortable2, #sortable3" ).sortable({
-      connectWith: ".connectedSortable",
-      receive: function(event, ui) {
-        saveItems();
-      }
-    }).disableSelection();
-
-    loadItemsFromStorage();
-
-    $("input").bind("change paste keyup", function() {
-      saveItems();
-    });
-
-    $(".add-item").each(function() {
-      $(this).on("click", function() {
-        var parentId = $(this).data('parent-id');
-        $("#" + parentId + " ul").append("<li><input type='text'/></li>");
-      });
-    });
-  });
-  </script>
 </head>
 <body>
  
