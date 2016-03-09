@@ -1,10 +1,12 @@
+var delete_button = "<button type='button' class='delete_button'>X</button>";
+
 var loadList = function(id, list) {
   if (list == undefined) {
     list = []
   }
 
   for (var i = 0; i < list.length; ++i) {
-    $("#" + id + " ul").append("<li> <input type='text' value='" + list[i] + "'/></li>");
+    $("#" + id + " ul").append("<li>" + delete_button  + "<input type='text' value='" + list[i] + "'/></li>");
   }
   return list;
 };
@@ -60,10 +62,15 @@ $(function() {
     saveItems();
   });
 
+  $("body").on("click", '.delete_button', function() {
+    $(this).parent().remove();
+    saveItems();
+  });
+
   $(".add-item").each(function() {
     $(this).on("click", function() {
       var parentId = $(this).data('parent-id');
-      $("#" + parentId + " ul").append("<li><input type='text'/></li>");
+      $("#" + parentId + " ul").append("<li><input type='text'/>" + delete_button + " </li>");
     });
   });
 });
