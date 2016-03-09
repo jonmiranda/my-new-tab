@@ -7,17 +7,20 @@
   <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
   <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
   <style>
-  #sortable1, #sortable2 {
+  .sortable-containers {
+    float: left;
+  }
+
+  .connectedSortable {
     border: 1px solid #eee;
     width: 142px;
     min-height: 20px;
     list-style-type: none;
     margin: 0;
     padding: 5px 0 0 0;
-    float: left;
     margin-right: 10px;
   }
-  #sortable1 li, #sortable2 li {
+  .connectedSortable li {
     margin: 0 5px 5px 5px;
     padding: 5px;
     font-size: 1.2em;
@@ -25,31 +28,91 @@
   }
   </style>
   <script>
+  
+  var loadList = function(id, list) {
+    if (list == undefined) {
+      list = []
+    } else {
+      list = JSON.parse(list);
+    }
+    console.log(id + " -list.length=" + list.length);
+    for (var i = 0; i < list.length; ++i) {
+      $("#" + id + " ul").append("<li> <input type='text' value='" + list[i] + "'/></li>");
+    }
+    return list;
+  };
+
+  var loadItemsFromStorage = function() {
+    loadList("to-do", sessionStorage.to_do);
+    loadList("doing", sessionStorage.doing);
+    loadList("done", sessionStorage.done);
+  }
+
+  var saveItems = function() {
+    var to_do = [];
+    var doing = [];
+    var done = [];
+
+    var lists = [to_do, doing, done];
+    var ids = ["to-do", "doing", "done"];
+    for (var i = 0; i < ids.length; ++i) {
+      $("#" + ids[i] + " li input").each(function() {
+        console.log($(this).val());
+        lists[i].push($(this).val());
+      });
+    }
+
+    console.log(to_do.length);
+
+    sessionStorage.to_do = JSON.stringify(to_do);
+    sessionStorage.doing = JSON.stringify(doing);
+    sessionStorage.done = JSON.stringify(done);
+  }
+
+  var deleteStorage = function () {
+    sessionStorage.removeItem("to_do");
+    sessionStorage.removeItem("doing");
+    sessionStorage.removeItem("done");
+  }
+
   $(function() {
     $( "#sortable1, #sortable2" ).sortable({
       connectWith: ".connectedSortable"
     }).disableSelection();
+
+    loadItemsFromStorage();
+
+    $(".add-item").each(function() {
+      $(this).on("click", function() {
+        var parentId = $(this).data('parent-id');
+        $("#" + parentId + " ul").append("<li><input type='text'/></li>");
+      });
+    });
   });
   </script>
 </head>
 <body>
  
-<ul id="sortable1" class="connectedSortable">
-  <li class="ui-state-default">Item 1</li>
-  <li class="ui-state-default">Item 2</li>
-  <li class="ui-state-default">Item 3</li>
-  <li class="ui-state-default">Item 4</li>
-  <li class="ui-state-default">Item 5</li>
-</ul>
+<div id="to-do" class="sortable-containers">
+  To Do
+  <ul id="sortable1" class="connectedSortable"></ul>
+  <button class="add-item" data-parent-id="to-do" type="button">Add</button>
+</div>
  
-<ul id="sortable2" class="connectedSortable">
-  <li class="ui-state-highlight">Item 1</li>
-  <li class="ui-state-highlight">Item 2</li>
-  <li class="ui-state-highlight">Item 3</li>
-  <li class="ui-state-highlight">Item 4</li>
-  <li class="ui-state-highlight">Item 5</li>
-</ul>
- 
- 
+<div id="doing" class="sortable-containers">
+  Doing
+  <ul id="sortable2" class="connectedSortable"></ul>
+  <button class="add-item" data-parent-id="doing" type="button">Add</button>
+</div>
+
+<div id="done" class="sortable-containers">
+  Done
+  <ul id="sortable3" class="connectedSortable"></ul>
+  <button class="add-item" data-parent-id="done" type="button">Add</button>  
+</div>
+
+<button onclick="saveItems()" type="button">Save Items</button>
+<button onclick="deleteStorage()" type="button">Delete Storage</button>
+
 </body>
 </html>
