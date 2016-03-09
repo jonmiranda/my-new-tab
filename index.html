@@ -78,7 +78,10 @@
 
   $(function() {
     $( "#sortable1, #sortable2, #sortable3" ).sortable({
-      connectWith: ".connectedSortable"
+      connectWith: ".connectedSortable",
+      receive: function(event, ui) {
+        saveItems();
+      }
     }).disableSelection();
 
     loadItemsFromStorage();
