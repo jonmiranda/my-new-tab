@@ -86,6 +86,10 @@
 
     loadItemsFromStorage();
 
+    $("input").bind("change paste keyup", function() {
+      saveItems();
+    });
+
     $(".add-item").each(function() {
       $(this).on("click", function() {
         var parentId = $(this).data('parent-id');
