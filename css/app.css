@@ -19,8 +19,7 @@ h1 {
 }
 
 .sortable-containers {
-  float: left;
-  min-width: 200px;
+  width: 100%;
   background: #ffffff;
   margin: 5px;
   padding: 10px;
@@ -37,11 +36,12 @@ h1 {
 .connectedSortable li {
   margin: 5px 5px 5px 5px;
   background: #efefef;
-  padding: 5px;
+  padding: 10px;
 }
 
 input {
   font-size: 1.2em;
+  width: 98%;
 }
 
 .add-item {
@@ -49,5 +49,4 @@ input {
   font-size: 1.5em;
   background: none;
   border: none;
-  padding: 5px;
 }

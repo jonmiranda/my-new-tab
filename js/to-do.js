@@ -11,22 +11,22 @@ var loadList = function(id, list) {
 
 // TODO: Sync between tabs chrome.storage.onChanged.addListener(function(changes, namespace).
 var loadItemsFromStorage = function() {
-  chrome.storage.local.get(["to_do", "doing", "done"], function(lists) {
-    loadList("to-do", lists.to_do);
-    loadList("doing", lists.doing);
-    loadList("done", lists.done);
+  chrome.storage.local.get(["must_do", "tasks", "notes"], function(lists) {
+    loadList("must-do", lists.must_do);
+    loadList("tasks", lists.tasks);
+    loadList("notes", lists.notes);
   });
 }
 
 var saveItems = function() {
   console.log("Saving items...");
 
-  var to_do = [];
-  var doing = [];
-  var done = [];
+  var must_do = [];
+  var tasks = [];
+  var notes = [];
 
-  var lists = [to_do, doing, done];
-  var ids = ["to-do", "doing", "done"];
+  var lists = [must_do, tasks, notes];
+  var ids = ["must-do", "tasks", "notes"];
   for (var i = 0; i < ids.length; ++i) {
     $("#" + ids[i] + " li input").each(function() {
       lists[i].push($(this).val());
@@ -34,7 +34,7 @@ var saveItems = function() {
   }
 
   chrome.storage.local.set(
-    {'to_do' : to_do, 'doing' : doing, 'done' : done}, 
+    {'must_do' : must_do, 'tasks' : tasks, 'notes' : notes}, 
     function() {
       if (chrome.runtime.lastError) {
         console.log(chrome.runtime.lastError);
@@ -56,7 +56,7 @@ $(function() {
 
   loadItemsFromStorage();
 
-  $("body").bind("change paste keyup", 'input', function() {
+  $("body").on("change keyup paste", 'input', function() {
     saveItems();
   });
 

@@ -10,22 +10,22 @@
 </head>
 <body>
   <h1>Today is a great day.</h1>
-  <div id="to-do" class="sortable-containers">
-    <h2>To Do</h2>
+  <div id="must-do" class="sortable-containers">
+    <button class="add-item" data-parent-id="must-do" type="button">+</button>
+    <h2>Things that must be done today.</h2>
     <ul id="sortable1" class="connectedSortable"></ul>
-    <button class="add-item" data-parent-id="to-do" type="button">+</button>
   </div>
    
-  <div id="doing" class="sortable-containers">
-    <h2>Doing</h2>
+  <div id="tasks" class="sortable-containers">
+    <button class="add-item" data-parent-id="tasks" type="button">+</button>
+    <h2>Additional tasks.</h2>
     <ul id="sortable2" class="connectedSortable"></ul>
-    <button class="add-item" data-parent-id="doing" type="button">+</button>
   </div>
 
-  <div id="done" class="sortable-containers">
-    <h2>Done</h2>
+  <div id="notes" class="sortable-containers">
+    <button class="add-item" data-parent-id="notes" type="button">+</button>  
+    <h2>Notes</h2>
     <ul id="sortable3" class="connectedSortable"></ul>
-    <button class="add-item" data-parent-id="done" type="button">+</button>  
   </div>
 </body>
 </html>
