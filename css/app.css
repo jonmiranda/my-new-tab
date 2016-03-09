@@ -1,0 +1,42 @@
+body {
+  margin: 0px auto;
+  width: 700px;
+ background: white no-repeat center center fixed;
+  -webkit-font-smoothing: antialiased;
+  -webkit-background-size: cover;
+  background-position: top left;
+  background-size: cover;
+  background-image: url('/images/background.jpg');
+}
+
+h1, h2 {
+  margin: 0 0 10px 0;
+}
+
+h1 {
+  color: #ffffff;
+  margin-top: 30%;
+}
+
+.sortable-containers {
+  float: left;
+  width: 25%;
+  background: #ffffff;
+  margin: 5px;
+  padding: 10px;
+}
+
+.connectedSortable {
+  border: 1px solid #eee;
+  min-height: 20px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.connectedSortable li {
+  margin: 5px 5px 5px 5px;
+  background: #efefef;
+  padding: 5px;
+  font-size: 1.2em;
+}

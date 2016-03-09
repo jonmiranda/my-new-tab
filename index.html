@@ -6,50 +6,26 @@
   <script src="js/jquery-1.10.2.js"></script>
   <script src="js/jquery-ui.js"></script>
   <script src="js/to-do.js"></script>
-  <style>
-  .sortable-containers {
-    float: left;
-  }
-
-  .connectedSortable {
-    border: 1px solid #eee;
-    width: 142px;
-    min-height: 20px;
-    list-style-type: none;
-    margin: 0;
-    padding: 5px 0 0 0;
-    margin-right: 10px;
-  }
-  .connectedSortable li {
-    margin: 5px 5px 5px 5px;
-    background: #efefef;
-    padding: 10px;
-    font-size: 1.2em;
-    width: 120px;
-  }
-  </style>
+  <link rel="stylesheet" href="/css/app.css">
 </head>
 <body>
- 
-<div id="to-do" class="sortable-containers">
-  To Do
-  <ul id="sortable1" class="connectedSortable"></ul>
-  <button class="add-item" data-parent-id="to-do" type="button">Add</button>
-</div>
- 
-<div id="doing" class="sortable-containers">
-  Doing
-  <ul id="sortable2" class="connectedSortable"></ul>
-  <button class="add-item" data-parent-id="doing" type="button">Add</button>
-</div>
+  <h1>Today is a great day.</h1>
+  <div id="to-do" class="sortable-containers">
+    <h2>To Do</h2>
+    <ul id="sortable1" class="connectedSortable"></ul>
+    <button class="add-item" data-parent-id="to-do" type="button">Add</button>
+  </div>
+   
+  <div id="doing" class="sortable-containers">
+    <h2>Doing</h2>
+    <ul id="sortable2" class="connectedSortable"></ul>
+    <button class="add-item" data-parent-id="doing" type="button">Add</button>
+  </div>
 
-<div id="done" class="sortable-containers">
-  Done
-  <ul id="sortable3" class="connectedSortable"></ul>
-  <button class="add-item" data-parent-id="done" type="button">Add</button>  
-</div>
-
-<button onclick="deleteStorage()" type="button">Delete Storage</button>
-
+  <div id="done" class="sortable-containers">
+    <h2>Done</h2>
+    <ul id="sortable3" class="connectedSortable"></ul>
+    <button class="add-item" data-parent-id="done" type="button">Add</button>  
+  </div>
 </body>
 </html>
