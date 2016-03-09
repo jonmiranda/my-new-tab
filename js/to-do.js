@@ -9,6 +9,7 @@ var loadList = function(id, list) {
   return list;
 };
 
+// TODO: Sync between tabs chrome.storage.onChanged.addListener(function(changes, namespace).
 var loadItemsFromStorage = function() {
   chrome.storage.local.get(["to_do", "doing", "done"], function(lists) {
     loadList("to-do", lists.to_do);
