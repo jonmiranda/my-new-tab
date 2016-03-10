@@ -57,4 +57,5 @@ input[type=text] {
   border: none;
   background: none;
   width: auto;
+  min-width: 50%;
 }

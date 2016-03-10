@@ -1,4 +1,23 @@
-var buttons = "<button type='button' class='delete_button'>X</button><button type='button' class='done_button'>Done</button>";
+var should_hide = function(time) {
+    if (!time) {
+        return false;
+    }
+
+    var today = new Date();
+    var then = new Date(time);
+
+    var threshold = 4 * 60 * 60 * 1000; // hide if older than 4 hours
+    return (today - then) > threshold;
+};
+
+var build_checkbox = function(time, checked) {
+    var check_string = checked ? " checked " : "";
+    return "<input type='checkbox'" + check_string + "data-time='" + time + "' class='done_button'>";
+};
+
+var build_li = function(li_class, time, checked, text) {
+    return "<li " + li_class + " >" + build_checkbox(time, checked) + "<button type='button' class='delete_button'>X</button><input class='text' type='text' value='" + text + "'/></li>"
+}
 
 var loadList = function (id, list) {
     if (list == undefined) {
@@ -6,19 +25,13 @@ var loadList = function (id, list) {
     }
 
     for (var i = 0; i < list.length; ++i) {
-        $("#" + id + " ul").append("<li>" + buttons + "<input type='text' value='" + list[i] + "'/></li>");
+        var time = list[i]['time'];
+        var checked = list[i]['done'];
+        var text = list[i]['text'];
+        var li_class = should_hide(time) ? " hide " : "";
+        $("#" + id + " ul").append(build_li(li_class, time, checked, text));
     }
     return list;
-};
-
-var markAsDone = function(text) {
-    chrome.storage.local.get("done", function (storage) {
-        if (!storage.done) {
-            storage.done = [];
-        }
-        storage.done.push({"text" : text, "time" : JSON.stringify(new Date())})
-        chrome.storage.local.set({"done" : storage.done});
-    });
 };
 
 var loadQuote = function(quote) {
@@ -51,8 +64,12 @@ var saveItems = function () {
     var lists = [must_do, tasks, notes];
     var ids = ["must-do", "tasks", "notes"];
     for (var i = 0; i < ids.length; ++i) {
-        $("#" + ids[i] + " li input").each(function () {
-            lists[i].push($(this).val());
+        $("#" + ids[i] + " li").each(function () {
+            var done = $(this).children(".done_button").is(':checked');
+            var time = $(this).children(".done_button").data("time");
+            var text = $(this).children(".text").val();
+            var data = {"text" : text, "done" : done, "time" : time};
+            lists[i].push(data);
         });
     }
 
@@ -91,7 +108,7 @@ $(function () {
 
     loadItemsFromStorage();
 
-    $("body").on("change keyup paste", 'input', function () {
+    $("body").on("change keyup paste", '.text', function () {
         saveItems();
     });
 
@@ -100,9 +117,8 @@ $(function () {
         saveItems();
     });
 
-    $("body").on("click", '.done_button', function () {
-        markAsDone($(this).siblings("input").val());
-        $(this).parent().remove();
+    $("body").on("change", '.done_button', function () {
+        $(this).attr('data-time', JSON.stringify(new Date()));
         saveItems();
     });
 
@@ -114,7 +130,7 @@ $(function () {
     $(".add-item").each(function () {
         $(this).on("click", function () {
             var selector = "#" + $(this).data('parent-id') + " ul";
-            $(selector).append("<li><input type='text'/>" + buttons + " </li>");
+            $(selector).append(build_li("", "", false, ""));
             $(selector + " li:last-child input").focus();
         });
     });
