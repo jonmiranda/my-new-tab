@@ -113,8 +113,9 @@ $(function () {
 
     $(".add-item").each(function () {
         $(this).on("click", function () {
-            var parentId = $(this).data('parent-id');
-            $("#" + parentId + " ul").append("<li><input type='text'/>" + buttons + " </li>");
+            var selector = "#" + $(this).data('parent-id') + " ul";
+            $(selector).append("<li><input type='text'/>" + buttons + " </li>");
+            $(selector + " li:last-child input").focus();
         });
     });
 });
