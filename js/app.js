@@ -1,22 +1,21 @@
 var should_hide = function(time) {
-    if (!time) {
+    if (time == "undefined" || time == undefined) {
         return false;
     }
 
     var today = new Date();
-    var then = new Date(time);
-
+    var then = new Date(JSON.parse(time));
     var threshold = 4 * 60 * 60 * 1000; // hide if older than 4 hours
     return (today - then) > threshold;
 };
 
 var build_checkbox = function(time, checked) {
     var check_string = checked ? " checked " : "";
-    return "<input type='checkbox'" + check_string + "data-time='" + time + "' class='done_button'>";
+    return "<input type='checkbox'" + check_string + "data-done-time='" + time + "' class='done_button'>";
 };
 
-var build_li = function(li_class, time, checked, text) {
-    return "<li " + li_class + " >" + build_checkbox(time, checked) + "<button type='button' class='delete_button'>X</button><input class='text' type='text' value='" + text + "'/></li>"
+var build_li = function(li_class, created_time, done_time, checked, text) {
+    return "<li class='" + li_class + "'>" + build_checkbox(done_time, checked) + "<button type='button' class='delete_button'>X</button><input class='text' type='text' value='" + text + "' data-created-time='" + created_time + "'/></li>"
 }
 
 var loadList = function (id, list) {
@@ -25,19 +24,20 @@ var loadList = function (id, list) {
     }
 
     for (var i = 0; i < list.length; ++i) {
-        var time = list[i]['time'];
-        var checked = list[i]['done'];
         var text = list[i]['text'];
-        var li_class = should_hide(time) ? " hide " : "";
-        $("#" + id + " ul").append(build_li(li_class, time, checked, text));
+        var done_time = list[i]['done_time'];
+        var created_time = list[i]['created_time'];
+        var li_class = should_hide(done_time) ? " hide " : "";
+        var done = done_time != undefined && done_time != "undefined";
+        $("#" + id + " ul").append(build_li(li_class, created_time, done_time, done, text));
     }
     return list;
 };
 
 var loadQuote = function(quote) {
-    var day = 24 * 60 * 60 * 1000;
+    var threshold = 2 * 60 * 60 * 1000;
     var now = new Date();
-    if (!quote || (now - new Date(JSON.parse(quote['time'])) > day)) {
+    if (!quote || (now - new Date(JSON.parse(quote['time'])) > threshold)) {
         get_new_quote();
     } else {
         display_quote(quote['quote']);
@@ -65,10 +65,10 @@ var saveItems = function () {
     var ids = ["must-do", "tasks", "notes"];
     for (var i = 0; i < ids.length; ++i) {
         $("#" + ids[i] + " li").each(function () {
-            var done = $(this).children(".done_button").is(':checked');
-            var time = $(this).children(".done_button").data("time");
+            var done_time = $(this).children(".done_button").data("done-time");
+            var created_time = $(this).children(".text").data("created-time");
             var text = $(this).children(".text").val();
-            var data = {"text" : text, "done" : done, "time" : time};
+            var data = {"text" : text, "done_time" : done_time, "created_time" : created_time};
             lists[i].push(data);
         });
     }
@@ -118,7 +118,11 @@ $(function () {
     });
 
     $("body").on("change", '.done_button', function () {
-        $(this).attr('data-time', JSON.stringify(new Date()));
+        if ($(this).is(':checked')) {
+            $(this).attr('data-done-time', JSON.stringify(new Date()));
+        } else {
+            $(this).removeAttr('data-done-time');
+        }
         saveItems();
     });
 
@@ -130,7 +134,7 @@ $(function () {
     $(".add-item").each(function () {
         $(this).on("click", function () {
             var selector = "#" + $(this).data('parent-id') + " ul";
-            $(selector).append(build_li("", "", false, ""));
+            $(selector).append(build_li("", JSON.stringify(new Date()), "", false, ""));
             $(selector + " li:last-child input").focus();
         });
     });
