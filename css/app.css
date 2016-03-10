@@ -34,7 +34,7 @@ h1 {
 
 .connectedSortable li {
   margin: 5px 5px 5px 5px;
-  background: #efefef;
+  background: #f8f8f8;
   padding: 10px;
 }
 
@@ -51,4 +51,10 @@ button {
 
 .delete_button, .done_button {
   font-size: 0.85em;
+}
+
+input[type=text] {
+  border: none;
+  background: none;
+  width: auto;
 }
