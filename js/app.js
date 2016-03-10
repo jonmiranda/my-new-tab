@@ -86,9 +86,9 @@ var display_quote = function(quote) {
 
 var get_new_quote = function() {
     $.ajax({
-       url: "http://quotesondesign.com/api/3.0/api-3.0.json",
+       url: "http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json",
         success: function(result) {
-            var quote = result['quote'];
+            var quote = result['quoteText'];
             display_quote(quote);
             quote = {"quote": quote, "time": JSON.stringify(new Date())};
             chrome.storage.local.set({"quote": quote});

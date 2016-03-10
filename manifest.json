@@ -9,7 +9,7 @@
     "identity",
     "storage",
     "tabs",
-    "http://quotesondesign.com/"
+    "http://api.forismatic.com/"
   ],
   "chrome_url_overrides": {
     "newtab": "index.html"
