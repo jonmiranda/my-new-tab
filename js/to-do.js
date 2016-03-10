@@ -12,7 +12,6 @@ var loadList = function (id, list) {
 };
 
 var loadQuote = function(quote) {
-    var quote = storage.quote;
     var day = 24 * 60 * 60 * 1000;
     var now = new Date();
     if (!quote || (now - new Date(JSON.parse(quote['time'])) > day)) {
