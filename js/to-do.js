@@ -1,4 +1,4 @@
-var delete_button = "<button type='button' class='delete_button'>X</button>";
+var buttons = "<button type='button' class='delete_button'>X</button><button type='button' class='done_button'>Done</button>";
 
 var loadList = function (id, list) {
     if (list == undefined) {
@@ -6,9 +6,19 @@ var loadList = function (id, list) {
     }
 
     for (var i = 0; i < list.length; ++i) {
-        $("#" + id + " ul").append("<li>" + delete_button + "<input type='text' value='" + list[i] + "'/></li>");
+        $("#" + id + " ul").append("<li>" + buttons + "<input type='text' value='" + list[i] + "'/></li>");
     }
     return list;
+};
+
+var markAsDone = function(text) {
+    chrome.storage.local.get("done", function (storage) {
+        if (!storage.done) {
+            storage.done = [];
+        }
+        storage.done.push({"text" : text, "time" : JSON.stringify(new Date())})
+        chrome.storage.local.set({"done" : storage.done});
+    });
 };
 
 var loadQuote = function(quote) {
@@ -23,7 +33,7 @@ var loadQuote = function(quote) {
 
 // TODO: Sync between tabs chrome.storage.onChanged.addListener(function(changes, namespace).
 var loadItemsFromStorage = function () {
-    chrome.storage.local.get(["must_do", "tasks", "notes", "quote"], function (storage) {
+    chrome.storage.local.get(["must_do", "tasks", "notes", "quote", "done"], function (storage) {
         loadList("must-do", storage.must_do);
         loadList("tasks", storage.tasks);
         loadList("notes", storage.notes);
@@ -90,6 +100,13 @@ $(function () {
         saveItems();
     });
 
+    $("body").on("click", '.done_button', function () {
+        markAsDone($(this).siblings("input").val());
+        $(this).parent().remove();
+        saveItems();
+    });
+
+
     $("#quote").click(function() {
         get_new_quote();
     });
@@ -97,7 +114,7 @@ $(function () {
     $(".add-item").each(function () {
         $(this).on("click", function () {
             var parentId = $(this).data('parent-id');
-            $("#" + parentId + " ul").append("<li><input type='text'/>" + delete_button + " </li>");
+            $("#" + parentId + " ul").append("<li><input type='text'/>" + buttons + " </li>");
         });
     });
 });

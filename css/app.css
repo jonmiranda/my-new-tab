@@ -42,13 +42,13 @@ input {
   font-size: 1.2em;
 }
 
-.add-item, .delete_button {
+button {
   float: right;
   font-size: 1.5em;
   background: none;
   border: none;
 }
 
-.delete_button {
+.delete_button, .done_button {
   font-size: 0.85em;
 }
