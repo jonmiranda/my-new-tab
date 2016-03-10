@@ -46,10 +46,9 @@ var loadQuote = function(quote) {
 
 // TODO: Sync between tabs chrome.storage.onChanged.addListener(function(changes, namespace).
 var loadItemsFromStorage = function () {
-    chrome.storage.local.get(["must_do", "tasks", "notes", "quote", "done"], function (storage) {
+    chrome.storage.local.get(["must_do", "tasks", "quote"], function (storage) {
         loadList("must-do", storage.must_do);
         loadList("tasks", storage.tasks);
-        loadList("notes", storage.notes);
         loadQuote(storage.quote);
     });
 };
@@ -59,10 +58,9 @@ var saveItems = function () {
 
     var must_do = [];
     var tasks = [];
-    var notes = [];
 
-    var lists = [must_do, tasks, notes];
-    var ids = ["must-do", "tasks", "notes"];
+    var lists = [must_do, tasks];
+    var ids = ["must-do", "tasks"];
     for (var i = 0; i < ids.length; ++i) {
         $("#" + ids[i] + " li").each(function () {
             var done_time = $(this).children(".done_button").data("done-time");
@@ -74,7 +72,7 @@ var saveItems = function () {
     }
 
     chrome.storage.local.set(
-        {'must_do': must_do, 'tasks': tasks, 'notes': notes},
+        {'must_do': must_do, 'tasks': tasks},
         function () {
             if (chrome.runtime.lastError) {
                 console.log(chrome.runtime.lastError);
@@ -99,7 +97,7 @@ var get_new_quote = function() {
 };
 
 $(function () {
-    $("#sortable1, #sortable2, #sortable3").sortable({
+    $("#sortable1, #sortable2").sortable({
         connectWith: ".connectedSortable",
         receive: function (event, ui) {
             saveItems();
