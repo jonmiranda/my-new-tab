@@ -1,5 +1,5 @@
 var should_hide = function(time) {
-    if (time == undefned || time == "undefined") {
+    if (time == undefined || time == "undefined") {
         return false;
     }
     try {
