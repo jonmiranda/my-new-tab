@@ -1,13 +1,11 @@
 var should_hide = function(time) {
-    if (time == "undefined" || time == undefined) {
+    if (time == undefned || time == "undefined") {
         return false;
     }
-
     try {
         var today = new Date();
         var then = new Date(JSON.parse(time));
-        var threshold = 4 * 60 * 60 * 1000; // hide if older than 4 hours
-        return (today - then) > threshold;
+        return today.getDate() > then.getDate();
     } catch (err) {
         return false;
     }
@@ -30,7 +28,6 @@ var loadList = function (id, list) {
     for (var i = 0; i < list.length; ++i) {
         var text = list[i]['text'];
         var done_time = list[i]['done_time'];
-        console.log("done_time = " + done_time);
         var created_time = list[i]['created_time'];
         var li_class = should_hide(done_time) ? " hide " : "";
         var done = done_time != undefined && done_time != "undefined";
