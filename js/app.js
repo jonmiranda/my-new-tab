@@ -58,17 +58,6 @@ var loadItemsFromStorage = function () {
     });
 };
 
-var sortByDoneTime = function(lhs, rhs) {
-    var lhs_time = lhs.done_time;
-    var rhs_time = rhs.done_time;
-    if (lhs_time < rhs_time) {
-        return 1;
-    } else if (lhs_time > rhs_time) {
-        return -1;
-    }
-    return 0;
-};
-
 var saveItems = function () {
     console.log("Saving items...");
 
@@ -86,9 +75,6 @@ var saveItems = function () {
             lists[i].push(data);
         });
     }
-
-    must_do.sort(sortByDoneTime);
-    tasks.sort(sortByDoneTime);
 
     chrome.storage.local.set(
         {'must_do': must_do, 'tasks': tasks},
