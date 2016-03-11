@@ -17,7 +17,10 @@ var build_checkbox = function(time, checked) {
 };
 
 var build_li = function(li_class, created_time, done_time, checked, text) {
-    return "<li class='" + li_class + "'>" + build_checkbox(done_time, checked) + "<button type='button' class='delete_button'>X</button><input class='text' type='text' value='" + text + "' data-created-time='" + created_time + "'/></li>"
+    return "<li class='" + li_class + "'>"
+        + build_checkbox(done_time, checked)
+        + "<button type='button' class='delete_button'>X</button>"
+        +"<input class='text' type='text' value='" + text + "' data-created-time='" + created_time + "'/></li>"
 }
 
 var loadList = function (id, list) {
@@ -55,6 +58,17 @@ var loadItemsFromStorage = function () {
     });
 };
 
+var sortByDoneTime = function(lhs, rhs) {
+    var lhs_time = lhs.done_time;
+    var rhs_time = rhs.done_time;
+    if (lhs_time < rhs_time) {
+        return 1;
+    } else if (lhs_time > rhs_time) {
+        return -1;
+    }
+    return 0;
+};
+
 var saveItems = function () {
     console.log("Saving items...");
 
@@ -72,6 +86,9 @@ var saveItems = function () {
             lists[i].push(data);
         });
     }
+
+    must_do.sort(sortByDoneTime);
+    tasks.sort(sortByDoneTime);
 
     chrome.storage.local.set(
         {'must_do': must_do, 'tasks': tasks},
