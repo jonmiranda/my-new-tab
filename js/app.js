@@ -3,10 +3,14 @@ var should_hide = function(time) {
         return false;
     }
 
-    var today = new Date();
-    var then = new Date(JSON.parse(time));
-    var threshold = 4 * 60 * 60 * 1000; // hide if older than 4 hours
-    return (today - then) > threshold;
+    try {
+        var today = new Date();
+        var then = new Date(JSON.parse(time));
+        var threshold = 4 * 60 * 60 * 1000; // hide if older than 4 hours
+        return (today - then) > threshold;
+    } catch (err) {
+        return false;
+    }
 };
 
 var build_checkbox = function(time, checked) {
@@ -26,6 +30,7 @@ var loadList = function (id, list) {
     for (var i = 0; i < list.length; ++i) {
         var text = list[i]['text'];
         var done_time = list[i]['done_time'];
+        console.log("done_time = " + done_time);
         var created_time = list[i]['created_time'];
         var li_class = should_hide(done_time) ? " hide " : "";
         var done = done_time != undefined && done_time != "undefined";
@@ -99,7 +104,7 @@ var get_new_quote = function() {
 $(function () {
     $("#sortable1, #sortable2").sortable({
         connectWith: ".connectedSortable",
-        receive: function (event, ui) {
+        receive: function () {
             saveItems();
         }
     }).disableSelection();
@@ -116,10 +121,9 @@ $(function () {
     });
 
     $("body").on("change", '.done_button', function () {
+        $(this).removeAttr('data-done-time');
         if ($(this).is(':checked')) {
             $(this).attr('data-done-time', JSON.stringify(new Date()));
-        } else {
-            $(this).removeAttr('data-done-time');
         }
         saveItems();
     });
