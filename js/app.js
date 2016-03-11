@@ -11,16 +11,18 @@ var should_hide = function(time) {
     }
 };
 
-var build_checkbox = function(time, checked) {
+var build_checkbox = function(time) {
+    var checked = !(!time || time == undefined || time == "undefined");
     var check_string = checked ? " checked " : "";
     return "<input type='checkbox'" + check_string + "data-done-time='" + time + "' class='done_button'>";
 };
 
-var build_li = function(li_class, created_time, done_time, checked, text) {
+var build_li = function(li_class, created_time, done_time, text) {
     return "<li class='" + li_class + "'>"
-        + build_checkbox(done_time, checked)
+        + build_checkbox(done_time)
         + "<button type='button' class='delete_button'>X</button>"
-        +"<input class='text' type='text' value='" + text + "' data-created-time='" + created_time + "'/></li>"
+        + "<input class='text' type='text' value='" + text + "' data-created-time='" + created_time + "'/>"
+        + "</li>";
 }
 
 var loadList = function (id, list) {
@@ -33,8 +35,7 @@ var loadList = function (id, list) {
         var done_time = list[i]['done_time'];
         var created_time = list[i]['created_time'];
         var li_class = should_hide(done_time) ? " hide " : "";
-        var done = done_time != undefined && done_time != "undefined";
-        $("#" + id + " ul").append(build_li(li_class, created_time, done_time, done, text));
+        $("#" + id + " ul").append(build_li(li_class, created_time, done_time, text));
     }
     return list;
 };
