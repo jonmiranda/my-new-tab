@@ -1,11 +1,24 @@
 body {
   margin: 0px auto;
   width: 700px;
-  background: white no-repeat center center fixed;
   -webkit-font-smoothing: antialiased;
   -webkit-background-size: cover;
   background-size: cover;
-  background-image: url('/images/background.jpg');
+  background: #373737;
+  font-family: "open sans";
+  -webkit-transition: all 1.0s ease;
+  -moz-transition: all 1.0s ease;
+  -ms-transition: all 1.0s ease;
+  -o-transition: all 1.0s ease;
+  transition: all 1.0s ease;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Open Sans Light'), local('OpenSans-Light'), url(http://fonts.gstatic.com/s/opensans/v10/DXI1ORHCpsQm3Vp6mXoaTSUUniRZcd_wq8DYmIfsw2A.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
 }
 
 h1, h2 {
@@ -14,7 +27,7 @@ h1, h2 {
 
 h1 {
   color: #ffffff;
-  margin-top: 2em;
+  margin-top: 8em;
 }
 
 .sortable-containers {
@@ -25,7 +38,7 @@ h1 {
 }
 
 .connectedSortable {
-  border: 1px solid #eee;
+  background: #f8f8f8;
   min-height: 20px;
   list-style-type: none;
   margin: 0;
@@ -62,4 +75,11 @@ input[type=text] {
 
 .hide {
   display: none;
+}
+
+#content {
+    position: absolute;
+    margin: 0px auto;
+    width: 50%;
+    z-index: 10002;
 }

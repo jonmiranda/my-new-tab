@@ -105,7 +105,7 @@ var get_new_quote = function() {
 $(function () {
     $("#sortable1, #sortable2").sortable({
         connectWith: ".connectedSortable",
-        receive: function () {
+        update: function(event, ui) {
             saveItems();
         }
     }).disableSelection();
@@ -134,11 +134,56 @@ $(function () {
         get_new_quote();
     });
 
+    $("#sortable2").hide();
+
+    $("#toggle_tasks").click(function() {
+        $("#sortable2").toggle(500);
+    });
+
     $(".add-item").each(function () {
         $(this).on("click", function () {
             var selector = "#" + $(this).data('parent-id') + " ul";
-            $(selector).append(build_li("", JSON.stringify(new Date()), "", false, ""));
+            $(selector).append(build_li("", JSON.stringify(new Date()), false, ""));
             $(selector + " li:last-child input").focus();
         });
     });
+
+    // http://www.sitepoint.com/javascript-generate-lighter-darker-color/
+    function ColorLuminance(hex, lum) {
+        // validate hex string
+        hex = String(hex).replace(/[^0-9a-f]/gi, '');
+        if (hex.length < 6) {
+            hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+        }
+        lum = lum || 0;
+
+        // convert to decimal and change luminosity
+        var rgb = "#", c, i;
+        for (i = 0; i < 3; i++) {
+            c = parseInt(hex.substr(i*2,2), 16);
+            c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+            rgb += ("00"+c).substr(c.length);
+        }
+
+        return rgb;
+    }
+
+    // TODO: See https://www.reddit.com/r/InternetIsBeautiful/comments/2p94dk/this_site_calculates_the_hex_colour_of_the/
+    function displayTime() {
+        var d = new Date();
+        var h = d.getHours();
+        var m = d.getMinutes();
+        var s = d.getSeconds();
+
+        if(h <= 9) h = '0' + h;
+        if(m <= 9) m = '0' + m;
+        if(s <= 9) s = '0' + s;
+
+        var color = "#" + h + m + s;
+        document.body.style.background = ColorLuminance(color, 0.5);
+        setTimeout(displayTime, 500);
+    }
+
+    //call the function
+    displayTime();
 });
