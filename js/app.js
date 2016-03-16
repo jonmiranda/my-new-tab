@@ -14,7 +14,8 @@ var should_hide = function(time) {
 var build_checkbox = function(time) {
     var checked = !(!time || time == undefined || time == "undefined");
     var check_string = checked ? " checked " : "";
-    return "<input type='checkbox'" + check_string + "data-done-time='" + time + "' class='done_button'>";
+    var done_time_string = checked ? "data-done-time='" + time + "'" : "";
+    return "<input type='checkbox'" + check_string + done_time_string + " class='done_button'>";
 };
 
 var build_li = function(li_class, created_time, done_time, text) {
@@ -69,10 +70,14 @@ var saveItems = function () {
     var ids = ["must-do", "tasks"];
     for (var i = 0; i < ids.length; ++i) {
         $("#" + ids[i] + " li").each(function () {
-            var done_time = $(this).children(".done_button").data("done-time");
-            var created_time = $(this).children(".text").data("created-time");
+            var created_time = $(this).children(".text").attr("data-created-time");
             var text = $(this).children(".text").val();
-            var data = {"text" : text, "done_time" : done_time, "created_time" : created_time};
+            var data = {text : text, created_time: created_time};
+            var done_time = $(this).children(".done_button").attr("data-done-time");
+            if (done_time) {
+                console.log(done_time);
+                data['done_time'] = done_time;
+            }
             lists[i].push(data);
         });
     }
