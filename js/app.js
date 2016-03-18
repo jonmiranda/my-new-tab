@@ -75,7 +75,6 @@ var saveItems = function () {
             var data = {text : text, created_time: created_time};
             var done_time = $(this).children(".done_button").attr("data-done-time");
             if (done_time) {
-                console.log(done_time);
                 data['done_time'] = done_time;
             }
             lists[i].push(data);

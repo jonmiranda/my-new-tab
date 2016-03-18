@@ -7,44 +7,39 @@ var myWidth = 0, myHeight = 0;
 var mouseIsDown = false;
 var mouseIsDownDivision = false;
 
+var getRadians = function(degrees) {
+    return degrees * Math.PI / 180;
+};
 
 // TODO: Cool idea would be to calculate "sunrise" and "sunset" based on location.
-// TODO: Or use maths to figure out the x, y based on some radius
-var getXYForHour = function(hour) {
-    var x = 0;
-    var y = 0;
-    if (hour < 6 || hour > 20) {
-        x = 356;
-        y = 748;
-    } else if (hour == 7) {
-        x = 90;
-        y = 412;
-    } else if (hour == 8) {
-        x = 165;
-        y = 172;
-    } else if (hour <= 12) {
-        x = 369;
-        y = 84;
-    } else if (hour <= 17) {
-        x = 599;
-        y = 68;
-    } else if (hour < 19) {
-        x = 1005;
-        y = 148;
-    } else if (hour == 19) {
-        x = 1134;
-        y = 391;
-    } else if (hour == 20) {
-        x = 1141;
-        y = 613;
-    }
-    return {"x": x, "y": y};
+var getXYForTime = function(hour, minutes) {
+    var xCenter = $(window).width() / 2;
+    var yCenter = $(window).height() / 1.5;
+
+    var hour_percentage = (hour / 23);
+    var minute_percentage = (minutes / 60) / 60;
+
+    var degrees = (hour_percentage + minute_percentage) * 360;
+    var degrees_offset = 90;
+    var radius = yCenter;
+    var theta = getRadians(degrees + degrees_offset);
+    var x = xCenter + (radius * Math.cos(theta));
+    var y = yCenter + (radius * Math.sin(theta));
+    return {x : x, y: y};
+};
+
+var setTime = function(time) {
+    var xy = getXYForTime(time.getHours(), time.getMinutes());
+    mouse.x = xy.x;
+    mouse.y = xy.y;
+    update();
 };
 
 window.addEventListener('load', function () {
-    var xy = getXYForHour(new Date().getHours());
-    mouse.x = xy.x;
-    mouse.y = xy.y;
+    setTime(new Date());
+}, false);
+
+var update = function() {
     updateDimensions();
 
     document.getElementById("sun").style.background = '-webkit-radial-gradient(' + mouse.x + 'px ' + mouse.y + 'px, circle, rgba(242,248,247,1) 0%,rgba(249,249,28,1) 3%,rgba(247,214,46,1) 8%, rgba(248,200,95,1) 12%,rgba(201,165,132,1) 30%,rgba(115,130,133,1) 51%,rgba(46,97,122,1) 85%,rgba(24,75,106,1) 100%)';
@@ -131,7 +126,7 @@ window.addEventListener('load', function () {
     }
 
 
-}, false);
+};
 
 function updateDimensions() {
     if (typeof( window.innerWidth ) == 'number') {
