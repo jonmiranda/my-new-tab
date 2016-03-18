@@ -35,9 +35,12 @@ var setTime = function(time) {
     update();
 };
 
-window.addEventListener('load', function () {
+var setTimeWrapper = function() {
     setTime(new Date());
-}, false);
+};
+
+window.addEventListener('load', setTimeWrapper, false);
+window.addEventListener('resize', setTimeWrapper, false);
 
 var update = function() {
     updateDimensions();
