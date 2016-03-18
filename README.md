@@ -7,5 +7,5 @@ I open a new chrome tab.
 * Pretty background.
 * Saves data to persistent local storage.
 
-![Screenshot](https://raw.githubusercontent.com/jonmiranda/my-new-tab/master/images/screenshot-1.jpg)
+![Screenshot](http://jonmiranda.net/content/images/2016/03/opt-demo.gif)
 
