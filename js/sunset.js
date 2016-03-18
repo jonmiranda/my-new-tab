@@ -35,6 +35,25 @@ var setTime = function(time) {
     update();
 };
 
+var debug_test_date = new Date();
+var debug_test_hours = debug_test_date.getHours();
+var debug_test_minutes = debug_test_date.getMinutes();
+var animate_day = function() {
+    var debug = true;
+    if (debug) {
+        setInterval(function() {
+            debug_test_minutes += 1;
+            if (debug_test_minutes == 60) {
+                debug_test_hours += 1;
+                debug_test_minutes = 0;
+            }
+            debug_test_date.setHours(debug_test_hours);
+            debug_test_date.setMinutes(debug_test_minutes);
+            setTime(debug_test_date)
+        }, 1);
+    }
+};
+
 var setTimeWrapper = function() {
     setTime(new Date());
 };
