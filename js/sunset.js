@@ -88,8 +88,6 @@ var update = function() {
 
     var sky = document.getElementById("sun");
     var water = document.getElementById("water");
-    var waterHeight = water.clientHeight;
-    var skyHeight = sky.clientHeight;
     document.getElementById("darknessOverlay").style.opacity = Math.min((mouse.y - (myHeight / 2)) / (myHeight / 2), 1);
     document.getElementById("darknessOverlaySky").style.opacity = Math.min((mouse.y - (myHeight * 7 / 10)) / (myHeight - (myHeight * 7 / 10)), 1);
     document.getElementById("moon").style.opacity = Math.min((mouse.y - (myHeight * 9 / 10)) / (myHeight - (myHeight * 9 / 10)), 0.65);
@@ -109,7 +107,6 @@ var update = function() {
         for (var i = 0; i < clouds.length; i++) {
             clouds[i].style.left = Math.min(myWidth * (Math.pow(mouse.y, 2) / Math.pow(myHeight / 2, 2)) * -1, 0);
         }
-        //}
 
         var stars = document.getElementsByClassName('star');
         for (var i = 0; i < stars.length; i++) {
@@ -152,15 +149,13 @@ var update = function() {
 
 function updateDimensions() {
     if (typeof( window.innerWidth ) == 'number') {
-        //Non-IE
+        // Non-IE
         myWidth = window.innerWidth;
         myHeight = window.innerHeight;
     } else if (document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight )) {
-
         myWidth = document.documentElement.clientWidth;
         myHeight = document.documentElement.clientHeight;
     } else if (document.body && ( document.body.clientWidth || document.body.clientHeight )) {
-
         myWidth = document.body.clientWidth;
         myHeight = document.body.clientHeight;
     }
@@ -183,8 +178,6 @@ function startDraggingDivision() {
 
 function windowResize() {
     updateDimensions();
-    var skyHeight = document.getElementById("horizon").clientHeight;
-
     // update to new sky height
     skyHeight = document.getElementById("sun").clientHeight;
     document.getElementById("waterDistance").style.height = myHeight - skyHeight;
