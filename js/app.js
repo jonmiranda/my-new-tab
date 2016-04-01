@@ -5,7 +5,7 @@ var should_hide = function(time) {
     try {
         var today = new Date();
         var then = new Date(JSON.parse(time));
-        return today.getDate() > then.getDate();
+        return today.getTime() > then.getTime();
     } catch (err) {
         return false;
     }
@@ -24,7 +24,7 @@ var build_li = function(li_class, created_time, done_time, text) {
         + "<button type='button' class='delete_button'>X</button>"
         + "<input class='text' type='text' value='" + text + "' data-created-time='" + created_time + "'/>"
         + "</li>";
-}
+};
 
 var loadList = function (id, list) {
     if (list == undefined) {
@@ -92,7 +92,7 @@ var saveItems = function () {
 
 var display_quote = function(quote) {
     $("#quote").html(quote);
-}
+};
 
 var get_new_quote = function() {
     $.ajax({
