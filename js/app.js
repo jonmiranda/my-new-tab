@@ -1,13 +1,15 @@
-var should_hide = function(time) {
+var should_show = function(time) {
     if (time == undefined || time == "undefined") {
-        return false;
+        return true;
     }
     try {
         var today = new Date();
         var then = new Date(JSON.parse(time));
-        return today.getTime() > then.getTime();
+        return today.getYear() == then.getYear()
+            && today.getMonth() == then.getMonth()
+            && today.getDate() == then.getDate();
     } catch (err) {
-        return false;
+        return true;
     }
 };
 
@@ -19,7 +21,7 @@ var build_checkbox = function(time) {
 };
 
 var build_li = function(li_class, created_time, done_time, text) {
-    return "<li class='" + li_class + "'>"
+    return "<li " + li_class + ">"
         + build_checkbox(done_time)
         + "<button type='button' class='delete_button'>X</button>"
         + "<input class='text' type='text' value='" + text + "' data-created-time='" + created_time + "'/>"
@@ -35,7 +37,7 @@ var loadList = function (id, list) {
         var text = list[i]['text'];
         var done_time = list[i]['done_time'];
         var created_time = list[i]['created_time'];
-        var li_class = should_hide(done_time) ? " hide " : "";
+        var li_class = should_show(done_time) ? "" : "class='hide'";
         $("#" + id + " ul").append(build_li(li_class, created_time, done_time, text));
     }
     return list;
